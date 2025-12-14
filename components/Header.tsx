@@ -5,10 +5,12 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import CartCount from './CartCount';
+import { useCart } from '@/context/CartContext';
 
 export default function Header() {
     const { data: session } = useSession();
     const [menuOpen, setMenuOpen] = useState(false);
+    const { itemCount } = useCart();
 
     return (
         <>
@@ -47,20 +49,16 @@ export default function Header() {
                             Products
                         </Link>
 
-                        <Link href="/cart" className="nav-link" onClick={() => setMenuOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                            <span style={{ fontSize: '1.2rem' }}>🛒</span>
-                            <CartCount />
+                        <Link href="/products" className="nav-link" onClick={() => setMenuOpen(false)}>
+                            Products
                         </Link>
 
-                        <Link href="/cart" className="nav-link" onClick={() => setMenuOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                            <span style={{ fontSize: '1.2rem' }}>🛒</span>
-                            <CartCount />
-                        </Link>
-
-                        <Link href="/cart" className="nav-link" onClick={() => setMenuOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                            <span style={{ fontSize: '1.2rem' }}>🛒</span>
-                            <CartCount />
-                        </Link>
+                        {itemCount > 0 && (
+                            <Link href="/cart" className="nav-link" onClick={() => setMenuOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                                <span style={{ fontSize: '1.2rem' }}>🛒</span>
+                                <CartCount />
+                            </Link>
+                        )}
 
                         {session ? (
                             <>
