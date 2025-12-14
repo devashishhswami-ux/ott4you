@@ -13,7 +13,7 @@ export const authConfig = {
         }),
     ],
     callbacks: {
-        async signIn({ user, account, profile }) {
+        async signIn({ user, account, profile }: any) {
             if (!user.email) return false;
 
             await connectDB();
@@ -34,7 +34,7 @@ export const authConfig = {
 
             return true;
         },
-        async session({ session, token }) {
+        async session({ session, token }: any) {
             if (session.user && token.sub) {
                 await connectDB();
                 const dbUser = await User.findOne({ email: session.user.email });
@@ -46,7 +46,7 @@ export const authConfig = {
             }
             return session;
         },
-        async jwt({ token, user }) {
+        async jwt({ token, user }: any) {
             if (user) {
                 token.id = user.id;
             }
