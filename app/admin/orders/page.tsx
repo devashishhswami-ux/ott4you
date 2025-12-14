@@ -55,8 +55,48 @@ export default function AdminOrdersPage() {
         .filter(order => order.status === 'completed')
         .reduce((sum, order) => sum + order.amount, 0);
 
+    const [viewScreenshot, setViewScreenshot] = useState<string | null>(null);
+
     return (
         <div>
+            {/* Screenshot Modal */}
+            {viewScreenshot && (
+                <div style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    background: 'rgba(0,0,0,0.9)',
+                    zIndex: 2000,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: '2rem'
+                }} onClick={() => setViewScreenshot(null)}>
+                    <div style={{ position: 'relative', maxWidth: '90%', maxHeight: '90%' }}>
+                        <button
+                            onClick={() => setViewScreenshot(null)}
+                            style={{
+                                position: 'absolute',
+                                top: '-2rem',
+                                right: '-2rem',
+                                background: 'none',
+                                border: 'none',
+                                color: 'white',
+                                fontSize: '2rem',
+                                cursor: 'pointer'
+                            }}
+                        >✕</button>
+                        <img
+                            src={viewScreenshot}
+                            alt="Payment Proof"
+                            style={{ maxWidth: '100%', maxHeight: '80vh', borderRadius: '8px', border: '2px solid white' }}
+                        />
+                    </div>
+                </div>
+            )}
+
             <h1 style={{ marginBottom: '2rem' }}>Orders Management</h1>
 
             {/* Stats */}
@@ -228,9 +268,9 @@ export default function AdminOrdersPage() {
                                             </td>
                                             <td style={{ padding: '1rem' }}>
                                                 <span className={`badge ${order.status === 'completed' ? 'badge-success' :
-                                                        order.status === 'pending_verification' ? 'badge-warning' :
-                                                            order.status === 'pending' ? 'badge-warning' :
-                                                                'badge-danger'
+                                                    order.status === 'pending_verification' ? 'badge-warning' :
+                                                        order.status === 'pending' ? 'badge-warning' :
+                                                            'badge-danger'
                                                     }`}>
                                                     {order.status === 'pending_verification' ? 'To Verify' : order.status}
                                                 </span>
@@ -241,7 +281,7 @@ export default function AdminOrdersPage() {
                                                         {order.manualPaymentDetails?.screenshot && (
                                                             <button
                                                                 className="btn btn-secondary btn-sm"
-                                                                onClick={() => window.open(order.manualPaymentDetails.screenshot, '_blank')}
+                                                                onClick={() => setViewScreenshot(order.manualPaymentDetails.screenshot)}
                                                             >
                                                                 View Proof
                                                             </button>
