@@ -93,7 +93,6 @@ export default function CheckoutPage() {
                         items: items
                     }),
                 });
-                */
 
                 const data = await response.json();
 
@@ -144,6 +143,8 @@ export default function CheckoutPage() {
                 };
 
                 const rzp = new window.Razorpay(options);
+                rzp.open();
+                */
                 rzp.open();
             }
 
