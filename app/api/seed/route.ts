@@ -7,10 +7,13 @@ import Product from '@/models/Product';
 // Seed script to populate initial products with REAL logos
 export async function GET() {
     try {
+        console.log('Starting seed process...');
         await connectDB();
+        console.log('Connected to DB');
 
         // Delete all existing products first to reseed with new logos
-        await Product.deleteMany({});
+        const deleteResult = await Product.deleteMany({});
+        console.log('Deleted products:', deleteResult.deletedCount);
 
         const products = [
             {
@@ -93,7 +96,7 @@ export async function GET() {
                 name: 'Jio Saavn Pro',
                 platform: 'Jio Saavn',
                 description: 'Unlimited music streaming with 80M+ songs in 15+ languages. Ad-free listening experience with high quality audio.',
-                logo: 'https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/jellyfin.png',
+                logo: 'https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/navidrome.png',
                 durations: [
                     { months: 1, price: 49 },
                     { months: 3, price: 129 },
@@ -112,7 +115,7 @@ export async function GET() {
                 name: 'SonyLIV Premium',
                 platform: 'SonyLIV',
                 description: 'Watch exclusive shows, live sports, movies, and international content. Stream WWE, UEFA, and more sports live.',
-                logo: 'https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/plex.png',
+                logo: 'https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/emby.png',
                 durations: [
                     { months: 1, price: 149 },
                     { months: 3, price: 349 },
@@ -129,16 +132,18 @@ export async function GET() {
             },
         ];
 
-        await Product.insertMany(products);
+        console.log('Inserting products...');
+        const result = await Product.insertMany(products);
+        console.log('Inserted:', result.length);
 
         return NextResponse.json({
             success: true,
             message: `Successfully seeded ${products.length} products with new logos!`,
         });
-    } catch (error) {
-        console.error('Error seeding products:', error);
+    } catch (error: any) {
+        console.error('Error seeding products:', error.message || error);
         return NextResponse.json(
-            { success: false, error: 'Failed to seed products' },
+            { success: false, error: 'Failed to seed products', details: error.message || String(error) },
             { status: 500 }
         );
     }
