@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useSession } from 'next-auth/react';
 import { redirect } from 'next/navigation';
 import Image from 'next/image';
@@ -8,7 +8,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
 export default function ProfilePage() {
-    const { data: session, status } = useSession();
+    const { data: session, status, update } = useSession(); // Added update
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [user, setUser] = useState<any>(null);
@@ -17,6 +17,7 @@ export default function ProfilePage() {
         image: '',
     });
     const [message, setMessage] = useState({ type: '', text: '' });
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         if (status === 'unauthenticated') {
@@ -45,6 +46,23 @@ export default function ProfilePage() {
         }
     };
 
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            // Check file size (max 0.5 MB to respect MongoDB doc limit recommendations for simple apps)
+            if (file.size > 500 * 1024) {
+                setMessage({ type: 'error', text: 'Image size should be less than 500KB' });
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setFormData(prev => ({ ...prev, image: reader.result as string }));
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setSaving(true);
@@ -62,6 +80,8 @@ export default function ProfilePage() {
             if (data.success) {
                 setUser(data.user);
                 setMessage({ type: 'success', text: 'Profile updated successfully!' });
+                // Attempt to update local session
+                await update({ name: formData.name, image: formData.image });
             } else {
                 setMessage({ type: 'error', text: data.error || 'Failed to update profile' });
             }
@@ -97,7 +117,7 @@ export default function ProfilePage() {
                     <div className="profile-content">
                         {/* Profile Picture Section */}
                         <div className="profile-picture-section">
-                            <div className="profile-picture-wrapper">
+                            <div className="profile-picture-wrapper" style={{ position: 'relative' }}>
                                 {formData.image ? (
                                     <Image
                                         src={formData.image}
@@ -105,19 +125,58 @@ export default function ProfilePage() {
                                         width={150}
                                         height={150}
                                         className="profile-picture"
+                                        style={{ objectFit: 'cover' }}
                                     />
                                 ) : (
                                     <div className="profile-picture-placeholder">
                                         {formData.name?.charAt(0)?.toUpperCase() || '?'}
                                     </div>
                                 )}
+
+                                {/* Overlay Button */}
+                                <button
+                                    onClick={() => fileInputRef.current?.click()}
+                                    style={{
+                                        position: 'absolute',
+                                        bottom: 0,
+                                        right: 0,
+                                        background: 'var(--primary-start)',
+                                        border: 'none',
+                                        borderRadius: '50%',
+                                        width: '40px',
+                                        height: '40px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        cursor: 'pointer',
+                                        boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+                                        color: 'white',
+                                        fontSize: '1.2rem'
+                                    }}
+                                    title="Upload new picture"
+                                >
+                                    📷
+                                </button>
+                                <input
+                                    type="file"
+                                    ref={fileInputRef}
+                                    onChange={handleImageChange}
+                                    accept="image/*"
+                                    style={{ display: 'none' }}
+                                />
                             </div>
+
                             <div className="profile-picture-info">
                                 <h3>{user?.name}</h3>
                                 <p>{user?.email}</p>
-                                <span className={`badge ${user?.role === 'admin' ? 'badge-warning' : 'badge-success'}`}>
-                                    {user?.role === 'admin' ? 'Admin' : 'Member'}
-                                </span>
+                                <button
+                                    type="button"
+                                    className="btn btn-sm btn-outline"
+                                    onClick={() => fileInputRef.current?.click()}
+                                    style={{ marginTop: '0.5rem' }}
+                                >
+                                    Upload New Picture
+                                </button>
                             </div>
                         </div>
 
@@ -131,7 +190,7 @@ export default function ProfilePage() {
                                     className="input"
                                     value={user?.email || ''}
                                     disabled
-                                    style={{ opacity: 0.6, cursor: 'not-allowed' }}
+                                    style={{ opacity: 0.6, cursor: 'not-allowed', background: 'var(--bg-tertiary)' }}
                                 />
                                 <span className="form-hint">Email cannot be changed</span>
                             </div>
@@ -147,19 +206,6 @@ export default function ProfilePage() {
                                     placeholder="Enter your name"
                                     required
                                 />
-                            </div>
-
-                            <div className="form-group">
-                                <label htmlFor="image">Profile Picture URL</label>
-                                <input
-                                    type="url"
-                                    id="image"
-                                    className="input"
-                                    value={formData.image}
-                                    onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                                    placeholder="https://example.com/your-image.jpg"
-                                />
-                                <span className="form-hint">Enter a URL to your profile picture</span>
                             </div>
 
                             {message.text && (
@@ -191,7 +237,11 @@ export default function ProfilePage() {
                                 </div>
                                 <div className="info-item">
                                     <span className="info-label">Account Type</span>
-                                    <span className="info-value">{user?.role === 'admin' ? 'Administrator' : 'Standard User'}</span>
+                                    <span className="info-value">
+                                        <span className={`badge ${user?.role === 'admin' ? 'badge-warning' : 'badge-success'}`}>
+                                            {user?.role === 'admin' ? 'Administrator' : 'Standard User'}
+                                        </span>
+                                    </span>
                                 </div>
                                 <div className="info-item">
                                     <span className="info-label">Authentication</span>

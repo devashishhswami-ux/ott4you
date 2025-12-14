@@ -64,6 +64,8 @@ export const authOptions = {
                     if (dbUser) {
                         session.user.id = dbUser._id.toString();
                         session.user.role = dbUser.role;
+                        session.user.name = dbUser.name;
+                        session.user.image = dbUser.image;
                     }
                 }
             } catch (error: any) {
