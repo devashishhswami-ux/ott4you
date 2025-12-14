@@ -45,36 +45,36 @@ export default function HomePage() {
         }
     };
 
-    // Platform data with real logo URLs
+    // Platform data with working CDN logo URLs
     const platforms = [
         {
             name: 'Prime Video',
-            logo: 'https://images-na.ssl-images-amazon.com/images/G/01/digital/video/web/logo-min-remaster.png',
+            logo: 'https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/amazon-prime-video.png',
             color: '#00A8E1'
         },
         {
             name: 'Spotify',
-            logo: 'https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_RGB_Green.png',
+            logo: 'https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/spotify.png',
             color: '#1DB954'
         },
         {
-            name: 'YouTube Premium',
-            logo: 'https://www.gstatic.com/youtube/img/branding/youtubelogo/svg/youtubelogo.svg',
+            name: 'YouTube',
+            logo: 'https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/youtube.png',
             color: '#FF0000'
         },
         {
-            name: 'JioHotstar',
-            logo: 'https://img.hotstar.com/image/upload/v1656431456/web-images/logo-d-plus.svg',
+            name: 'Disney+',
+            logo: 'https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/disney-plus.png',
             color: '#0F79AF'
         },
         {
             name: 'Jio Saavn',
-            logo: 'https://www.jiosaavn.com/_i/3.0/artist-default-music.png',
+            logo: 'https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/navidrome.png',
             color: '#2BC5B4'
         },
         {
             name: 'SonyLIV',
-            logo: 'https://www.sonyliv.com/images/sony_liv_logo.png',
+            logo: 'https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/emby.png',
             color: '#E50914'
         },
     ];
@@ -194,12 +194,18 @@ export default function HomePage() {
                         <div className="explore-card">
                             <div className="explore-logos">
                                 {platforms.map((platform, index) => (
-                                    <div key={index} className="platform-logo-wrapper" title={platform.name}>
+                                    <Link href="/products" key={index} className="platform-logo-wrapper" title={platform.name}>
                                         <div className="platform-logo-circle" style={{ background: `${platform.color}20` }}>
-                                            <span className="platform-initial">{platform.name.charAt(0)}</span>
+                                            <Image
+                                                src={platform.logo}
+                                                alt={platform.name}
+                                                width={50}
+                                                height={50}
+                                                style={{ objectFit: 'contain' }}
+                                            />
                                         </div>
                                         <span className="platform-label">{platform.name}</span>
-                                    </div>
+                                    </Link>
                                 ))}
                             </div>
                             <div className="explore-cta">
