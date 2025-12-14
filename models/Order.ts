@@ -8,9 +8,14 @@ export interface IOrder {
     platform: string;
     duration: number;
     amount: number;
-    paymentId: string;
-    razorpayOrderId: string;
-    status: 'pending' | 'completed' | 'failed';
+    paymentId?: string;
+    razorpayOrderId?: string;
+    paymentMethod: 'RAZORPAY' | 'MANUAL_UPI';
+    manualPaymentDetails?: {
+        utr: string;
+        screenshot: string;
+    };
+    status: 'pending' | 'completed' | 'failed' | 'pending_verification';
     purchaseDate: Date;
 }
 
@@ -42,15 +47,24 @@ const OrderSchema = new Schema<IOrder>({
     },
     paymentId: {
         type: String,
-        required: true,
+        required: false, // Changed to false for manual
     },
     razorpayOrderId: {
         type: String,
-        required: true,
+        required: false, // Changed to false for manual
+    },
+    paymentMethod: {
+        type: String,
+        enum: ['RAZORPAY', 'MANUAL_UPI'],
+        default: 'RAZORPAY',
+    },
+    manualPaymentDetails: {
+        utr: String,
+        screenshot: String,
     },
     status: {
         type: String,
-        enum: ['pending', 'completed', 'failed'],
+        enum: ['pending', 'completed', 'failed', 'pending_verification'],
         default: 'pending',
     },
     purchaseDate: {
