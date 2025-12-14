@@ -216,27 +216,38 @@ export default function HomePage() {
                 {/* Features Section */}
                 <section className="features-section">
                     <div className="container">
-                        <h2 className="section-title">Why Choose OTT4YOU?</h2>
+                        <h2 className="section-title animate-slide-up">Why Choose <span className="text-gradient">OTT4YOU</span>?</h2>
+                        <p className="section-subtitle animate-slide-up">We offer the best deals on premium streaming subscriptions</p>
                         <div className="features-grid">
-                            <div className="feature-card">
-                                <div className="feature-icon">💰</div>
-                                <h3>Best Prices</h3>
-                                <p>Get premium subscriptions at the most competitive prices in the market.</p>
+                            <div className="feature-card animate-pop-in" style={{ animationDelay: '0.1s' }}>
+                                <div className="feature-icon">💸</div>
+                                <h3>Half Prices</h3>
+                                <p>Get premium OTT subscriptions at almost 50% less than official prices. Save big on every purchase!</p>
                             </div>
-                            <div className="feature-card">
+                            <div className="feature-card animate-pop-in" style={{ animationDelay: '0.2s' }}>
+                                <div className="feature-icon">✨</div>
+                                <h3>Real Quality</h3>
+                                <p>100% genuine accounts with full HD/4K streaming quality. No compromises on your entertainment.</p>
+                            </div>
+                            <div className="feature-card animate-pop-in" style={{ animationDelay: '0.3s' }}>
+                                <div className="feature-icon">🆕</div>
+                                <h3>Fresh Accounts</h3>
+                                <p>Brand new, unused accounts every time. No shared access, fully dedicated to you!</p>
+                            </div>
+                            <div className="feature-card animate-pop-in" style={{ animationDelay: '0.4s' }}>
+                                <div className="feature-icon">⚡</div>
+                                <h3>Instant Delivery</h3>
+                                <p>Get your account credentials within minutes of payment. Start streaming right away!</p>
+                            </div>
+                            <div className="feature-card animate-pop-in" style={{ animationDelay: '0.5s' }}>
                                 <div className="feature-icon">🔒</div>
                                 <h3>Secure Payments</h3>
-                                <p>All transactions are secured with Razorpay's advanced encryption.</p>
+                                <p>All transactions secured with Razorpay. 100% safe and encrypted payments.</p>
                             </div>
-                            <div className="feature-card">
-                                <div className="feature-icon">⚡</div>
-                                <h3>Instant Activation</h3>
-                                <p>Your subscription gets activated immediately after successful payment.</p>
-                            </div>
-                            <div className="feature-card">
+                            <div className="feature-card animate-pop-in" style={{ animationDelay: '0.6s' }}>
                                 <div className="feature-icon">🎧</div>
                                 <h3>24/7 Support</h3>
-                                <p>Our support team is always ready to help you with any issues.</p>
+                                <p>Our support team is always ready to help you with any issues. Email us anytime!</p>
                             </div>
                         </div>
                     </div>
