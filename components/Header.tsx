@@ -49,9 +49,7 @@ export default function Header() {
                             Products
                         </Link>
 
-                        <Link href="/products" className="nav-link" onClick={() => setMenuOpen(false)}>
-                            Products
-                        </Link>
+
 
                         {itemCount > 0 && (
                             <Link href="/cart" className="nav-link" onClick={() => setMenuOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
