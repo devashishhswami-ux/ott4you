@@ -13,7 +13,7 @@ export default async function DashboardPage() {
     }
 
     await connectDB();
-    const orders = await Order.find({ userId: session.user.id })
+    const orders = await Order.find({ userId: (session.user as any).id })
         .sort({ purchaseDate: -1 })
         .lean();
 
@@ -98,8 +98,8 @@ export default async function DashboardPage() {
                                                 ₹{order.amount}
                                             </div>
                                             <span className={`badge ${order.status === 'completed' ? 'badge-success' :
-                                                    order.status === 'pending' ? 'badge-warning' :
-                                                        'badge-danger'
+                                                order.status === 'pending' ? 'badge-warning' :
+                                                    'badge-danger'
                                                 }`}>
                                                 {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
                                             </span>

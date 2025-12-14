@@ -43,7 +43,7 @@ export async function POST(request: Request) {
         // Save order to database
         await connectDB();
         const order = await Order.create({
-            userId: session.user.id,
+            userId: (session.user as any).id,
             productId,
             productName,
             platform,

@@ -1,11 +1,12 @@
-'use server';
+// This file is not needed for NextAuth v4
+// Auth actions are handled client-side via next-auth/react hooks
+// See components/Header.tsx for usage
 
-import { signIn as nextAuthSignIn, signOut as nextAuthSignOut } from 'next-auth/react';
-
+// Placeholder exports for compatibility
 export async function handleSignIn() {
-    // This will be handled client-side
+    // Not used - signIn is called client-side
 }
 
 export async function handleSignOut() {
-    // This will be handled client-side
+    // Not used - signOut is called client-side
 }

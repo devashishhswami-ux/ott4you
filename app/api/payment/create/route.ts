@@ -24,7 +24,7 @@ export async function POST(request: Request) {
                 productId,
                 productName,
                 duration,
-                userId: session.user.id,
+                userId: (session.user as any).id,
             },
         });
 

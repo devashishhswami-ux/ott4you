@@ -13,7 +13,7 @@ export const authOptions: NextAuthOptions = {
         }),
     ],
     callbacks: {
-        async signIn({ user }) {
+        async signIn({ user }: any) {
             if (!user.email) return false;
 
             await connectDB();
@@ -32,19 +32,19 @@ export const authOptions: NextAuthOptions = {
 
             return true;
         },
-        async session({ session, token }) {
+        async session({ session, token }: any) {
             if (session.user && token.sub) {
                 await connectDB();
                 const dbUser = await User.findOne({ email: session.user.email });
 
                 if (dbUser) {
-                    (session.user as any).id = dbUser._id.toString();
-                    (session.user as any).role = dbUser.role;
+                    session.user.id = dbUser._id.toString();
+                    session.user.role = dbUser.role;
                 }
             }
             return session;
         },
-        async jwt({ token, user }) {
+        async jwt({ token, user }: any) {
             if (user) {
                 token.id = user.id;
             }
