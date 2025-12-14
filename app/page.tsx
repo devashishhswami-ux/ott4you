@@ -128,26 +128,6 @@ export default function HomePage() {
                                             </div>
                                         </div>
                                     </div>
-
-                                    {stats.recentOrders.length > 0 && (
-                                        <div className="recent-orders">
-                                            <h3>Recent Purchases</h3>
-                                            <div className="orders-list">
-                                                {stats.recentOrders.map((order: any, index: number) => (
-                                                    <div key={index} className="order-item">
-                                                        <div className="order-info">
-                                                            <strong>{order.productName}</strong>
-                                                            <span>{order.platform} • {order.duration} Month(s)</span>
-                                                        </div>
-                                                        <div className="order-amount">₹{order.amount}</div>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                            <Link href="/dashboard" className="btn btn-secondary" style={{ marginTop: '1rem' }}>
-                                                View All Orders →
-                                            </Link>
-                                        </div>
-                                    )}
                                 </>
                             ) : (
                                 <div className="no-orders-message">
@@ -161,42 +141,8 @@ export default function HomePage() {
                     </section>
                 )}
 
-                {/* Explore Section */}
-                <section className="explore-section">
-                    <div className="container">
-                        <h2 className="section-title">Explore Our Catalog</h2>
-                        <p className="section-subtitle">Premium streaming services at your fingertips</p>
-
-                        <div className="explore-card">
-                            <div className="explore-logos">
-                                {platforms.map((platform, index) => (
-                                    <Link href="/products" key={index} className="platform-logo-wrapper" title={platform.name}>
-                                        <div className="platform-logo-circle" style={{ borderColor: platform.color }}>
-                                            <Image
-                                                src={platform.logo}
-                                                alt={platform.name}
-                                                width={80}
-                                                height={80}
-                                                className="platform-logo-img"
-                                            />
-                                        </div>
-                                        <span className="platform-label">{platform.name}</span>
-                                    </Link>
-                                ))}
-                            </div>
-                            <div className="explore-cta">
-                                <h3>Ready to Start Streaming?</h3>
-                                <p>Browse our collection and find the perfect subscription for you!</p>
-                                <Link href="/products" className="btn btn-primary btn-lg btn-glow">
-                                    View All Products →
-                                </Link>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
                 {/* Features Section */}
-                <section className="features-section">
+                <section className="features-section" style={{ marginTop: '4rem' }}>
                     <div className="container">
                         <h2 className="section-title animate-slide-up">Why Choose <span className="text-gradient">OTT4YOU</span>?</h2>
                         <p className="section-subtitle animate-slide-up">We offer the best deals on premium streaming subscriptions</p>
