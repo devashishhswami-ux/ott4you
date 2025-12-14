@@ -1,29 +1,9 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import connectDB from './lib/mongodb';
-import Settings from './models/Settings';
 
 export async function middleware(request: NextRequest) {
-    // Skip maintenance check for admin routes and API
-    if (
-        request.nextUrl.pathname.startsWith('/admin') ||
-        request.nextUrl.pathname.startsWith('/api') ||
-        request.nextUrl.pathname === '/maintenance'
-    ) {
-        return NextResponse.next();
-    }
-
-    try {
-        await connectDB();
-        const settings = await Settings.findOne();
-
-        if (settings?.maintenanceMode) {
-            return NextResponse.redirect(new URL('/maintenance', request.url));
-        }
-    } catch (error) {
-        console.error('Middleware error:', error);
-    }
-
+    // Maintenance mode check disabled in Edge Runtime
+    // To enable, move to API route or server component
     return NextResponse.next();
 }
 
