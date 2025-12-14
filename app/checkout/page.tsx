@@ -181,6 +181,45 @@ export default function CheckoutPage() {
                 </div>
             </main>
             <Footer />
+
+            {/* Payment Processing Overlay */}
+            {loading && (
+                <div style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    background: 'rgba(0,0,0,0.85)',
+                    backdropFilter: 'blur(5px)',
+                    zIndex: 9999,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: 'white'
+                }}>
+                    <div className="spinner" style={{
+                        width: '60px',
+                        height: '60px',
+                        borderWidth: '4px',
+                        marginBottom: '1.5rem',
+                        borderColor: 'rgba(255,255,255,0.3)',
+                        borderTopColor: 'var(--primary-start)'
+                    }} />
+                    <h2 style={{
+                        fontSize: '1.5rem',
+                        fontWeight: 600,
+                        marginBottom: '0.5rem',
+                        background: 'linear-gradient(to right, #fff, #bbb)',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent'
+                    }}>
+                        Processing Payment...
+                    </h2>
+                    <p style={{ color: '#aaa' }}>Please do not close this window</p>
+                </div>
+            )}
         </>
     );
 }

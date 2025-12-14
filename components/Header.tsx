@@ -53,7 +53,7 @@ export default function Header() {
 
                         {itemCount > 0 && (
                             <Link href="/cart" className="nav-link" onClick={() => setMenuOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                                <span style={{ fontSize: '1.2rem' }}>🛒</span>
+                                <span style={{ fontSize: '0.9rem', fontWeight: 600, letterSpacing: '1px' }}>CART</span>
                                 <CartCount />
                             </Link>
                         )}

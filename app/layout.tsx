@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import Providers from '@/components/Providers';
+import SupportWidget from '@/components/SupportWidget';
 
 export const metadata: Metadata = {
     title: 'OTT4YOU - Premium OTT Subscriptions',
@@ -18,6 +19,7 @@ export default function RootLayout({
             <body>
                 <Providers>
                     {children}
+                    <SupportWidget />
                 </Providers>
             </body>
         </html>

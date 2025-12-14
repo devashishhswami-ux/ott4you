@@ -45,9 +45,9 @@ export default function Footer() {
                         <h3 className="text-gradient">OTT4YOU</h3>
                         <p>Your one-stop destination for premium OTT subscriptions at the best prices.</p>
                         <div className="social-links">
-                            <a href="#" className="social-link">📧</a>
-                            <a href="#" className="social-link">📱</a>
-                            <a href="#" className="social-link">💬</a>
+                            <a href="mailto:batmanisaliveebro@gmail.com" className="social-link">📧</a>
+                            <a href="https://t.me/akhilescrow" target="_blank" rel="noopener noreferrer" className="social-link">📱</a>
+                            <a href="https://t.me/akhilescrow" target="_blank" rel="noopener noreferrer" className="social-link">💬</a>
                         </div>
                     </div>
 
@@ -63,12 +63,12 @@ export default function Footer() {
                     <div className="footer-links">
                         <h4>Platforms</h4>
                         <ul>
-                            <li>Prime Video</li>
-                            <li>Spotify Premium</li>
-                            <li>YouTube Premium</li>
-                            <li>JioHotstar</li>
-                            <li>Jio Saavn</li>
-                            <li>SonyLIV</li>
+                            <li><Link href="/products">Prime Video</Link></li>
+                            <li><Link href="/products">Spotify Premium</Link></li>
+                            <li><Link href="/products">YouTube Premium</Link></li>
+                            <li><Link href="/products">JioHotstar</Link></li>
+                            <li><Link href="/products">Jio Saavn</Link></li>
+                            <li><Link href="/products">SonyLIV</Link></li>
                         </ul>
                     </div>
 
