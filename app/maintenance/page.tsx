@@ -1,3 +1,6 @@
+// Force dynamic rendering - don't prerender this page
+export const dynamic = 'force-dynamic';
+
 import connectDB from '@/lib/mongodb';
 import Settings from '@/models/Settings';
 
