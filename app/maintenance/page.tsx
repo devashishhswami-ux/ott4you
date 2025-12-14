@@ -20,7 +20,6 @@ export default async function MaintenancePage() {
                 <div style={{
                     fontSize: '6rem',
                     marginBottom: '2rem',
-                    animation: 'pulse 2s ease-in-out infinite',
                 }}>
                     🔧
                 </div>
@@ -40,18 +39,6 @@ export default async function MaintenancePage() {
                     </p>
                 </div>
             </div>
-            <style jsx>{`
-        @keyframes pulse {
-          0%, 100% {
-            transform: scale(1);
-            opacity: 1;
-          }
-          50% {
-            transform: scale(1.1);
-            opacity: 0.8;
-          }
-        }
-      `}</style>
         </div>
     );
 }
