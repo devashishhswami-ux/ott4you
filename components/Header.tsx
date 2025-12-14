@@ -44,6 +44,9 @@ export default function Header() {
                                 <Link href="/dashboard" className="nav-link">
                                     My Orders
                                 </Link>
+                                <Link href="/profile" className="nav-link">
+                                    Profile
+                                </Link>
 
                                 {(session.user as any)?.role === 'admin' && (
                                     <Link href="/admin" className="nav-link admin-link">
