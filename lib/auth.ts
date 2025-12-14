@@ -5,7 +5,7 @@ import User from '@/models/User';
 
 const adminEmails = process.env.ADMIN_EMAILS?.split(',').map((email: string) => email.trim()) || [];
 
-export const { handlers, auth, signIn, signOut } = NextAuth({
+const handler = NextAuth({
     providers: [
         Google({
             clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -55,6 +55,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         signIn: '/',
     },
     session: {
-        strategy: 'jwt',
+        strategy: 'jwt' as const,
     },
 });
+
+export const { auth, signIn, signOut } = handler;
+export const { GET, POST } = handler.handlers;
