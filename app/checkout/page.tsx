@@ -6,12 +6,17 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import QRCode from 'qrcode';
 
 declare global {
     interface Window {
         Razorpay: any;
     }
 }
+
+// TODO: REPLACE THIS WITH YOUR UPI ID
+const UPI_VPA = 'BATMANISALIVEEBRO@OKSBI';
+const UPI_NAME = 'OTT4YOU';
 
 export default function CheckoutPage() {
     const { items, totalAmount, clearCart } = useCart();
@@ -21,12 +26,30 @@ export default function CheckoutPage() {
     const [paymentMethod, setPaymentMethod] = useState<'RAZORPAY' | 'MANUAL_UPI'>('RAZORPAY');
     const [manualDetails, setManualDetails] = useState({ utr: '', screenshot: '' });
     const [fileError, setFileError] = useState('');
+    const [qrCodeUrl, setQrCodeUrl] = useState('');
 
     useEffect(() => {
         if (!session) {
             router.push('/cart');
         }
     }, [session, router]);
+
+    // Generate Dynamic QR Code
+    useEffect(() => {
+        if (totalAmount > 0) {
+            const generateQR = async () => {
+                try {
+                    // UPI URL Format: upi://pay?pa=<VPA>&pn=<NAME>&am=<AMOUNT>&cu=INR
+                    const upiUrl = `upi://pay?pa=${UPI_VPA}&pn=${UPI_NAME}&am=${totalAmount}&cu=INR`;
+                    const url = await QRCode.toDataURL(upiUrl, { width: 300, margin: 2 });
+                    setQrCodeUrl(url);
+                } catch (err) {
+                    console.error('QR Generation Error:', err);
+                }
+            };
+            generateQR();
+        }
+    }, [totalAmount]);
 
     const handleScreenshotChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -278,18 +301,27 @@ export default function CheckoutPage() {
                                     <p style={{ marginBottom: '1rem', color: '#ffeb3b', fontSize: '0.9rem' }}>
                                         Scan this QR to pay <strong>₹{totalAmount}</strong>
                                     </p>
-                                    <img
-                                        src="/payment-qr.jpg"
-                                        alt="Payment QR"
-                                        style={{
-                                            width: '200px',
-                                            height: '200px',
-                                            borderRadius: '8px',
-                                            border: '2px solid white'
-                                        }}
-                                    />
+                                    {qrCodeUrl ? (
+                                        <img
+                                            src={qrCodeUrl}
+                                            alt="Payment QR"
+                                            style={{
+                                                width: '200px',
+                                                height: '200px',
+                                                borderRadius: '8px',
+                                                border: '2px solid white'
+                                            }}
+                                        />
+                                    ) : (
+                                        <div style={{ width: '200px', height: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#aaa' }}>
+                                            Generating QR...
+                                        </div>
+                                    )}
                                     <p style={{ marginTop: '0.5rem', fontSize: '0.8rem', color: '#aaa' }}>
                                         Accepts PhonePe, GPay, Paytm, etc.
+                                    </p>
+                                    <p style={{ fontSize: '0.75rem', color: '#888', marginTop: '0.25rem' }}>
+                                        Paying to: <strong>{UPI_VPA}</strong>
                                     </p>
                                 </div>
 
