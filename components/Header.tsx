@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { auth, signIn, signOut } from '@/lib/auth';
+import { auth } from '@/lib/auth';
+import { handleSignIn, handleSignOut } from '@/lib/actions';
 import Image from 'next/image';
 
 export default async function Header() {
@@ -59,10 +60,7 @@ export default async function Header() {
                                     />
                                 )}
                                 <span style={{ color: 'var(--text-secondary)' }}>{session.user.name}</span>
-                                <form action={async () => {
-                                    'use server';
-                                    await signOut({ redirectTo: '/' });
-                                }}>
+                                <form action={handleSignOut}>
                                     <button type="submit" className="btn btn-secondary" style={{ padding: '0.5rem 1.5rem' }}>
                                         Sign Out
                                     </button>
@@ -70,10 +68,7 @@ export default async function Header() {
                             </div>
                         </>
                     ) : (
-                        <form action={async () => {
-                            'use server';
-                            await signIn('google', { redirectTo: '/' });
-                        }}>
+                        <form action={handleSignIn}>
                             <button type="submit" className="btn btn-primary">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                                     <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
