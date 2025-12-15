@@ -36,12 +36,14 @@ export async function POST(req: Request) {
                 productName: item.productName,
                 platform: item.platform,
                 duration: item.duration,
-                amount: item.price, // Individual item amount
+                amount: item.price * (item.quantity || 1), // Total amount for this item with quantity
+                paymentId: utr, // Use UTR as payment ID for manual payments
                 paymentMethod: 'MANUAL_UPI',
                 status: 'pending_verification',
                 manualPaymentDetails: {
                     utr,
-                    screenshot
+                    screenshot,
+                    quantity: item.quantity || 1
                 }
             });
             await newOrder.save();

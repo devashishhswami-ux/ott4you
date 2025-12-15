@@ -85,7 +85,7 @@ export default async function DashboardPage() {
                                                 Purchased on {new Date(order.purchaseDate).toLocaleDateString()}
                                             </p>
                                             <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>
-                                                Payment ID: {order.paymentId}
+                                                Payment ID: {order.paymentId || 'Pending'}
                                             </p>
                                         </div>
                                         <div style={{ textAlign: 'right' }}>
