@@ -138,7 +138,6 @@ export default function ProductsPage() {
 
     return (
         <>
-            <AnimatedBackground />
             <Header />
             <main>
                 {/* Hero Section */}
