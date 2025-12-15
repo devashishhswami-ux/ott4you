@@ -532,4 +532,3 @@ export default function CheckoutPage() {
         </>
     );
 }
-```
