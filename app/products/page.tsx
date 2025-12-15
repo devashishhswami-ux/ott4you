@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useSession, signIn } from 'next-auth/react';
 import ProductCard from '@/components/ProductCard';
 import SearchBar from '@/components/SearchBar';
+import AnimatedBackground from '@/components/AnimatedBackground';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { IProduct } from '@/models/Product';
@@ -139,6 +140,7 @@ export default function ProductsPage() {
 
     return (
         <>
+            <AnimatedBackground />
             <Header />
             <main>
                 {/* Hero Section */}
