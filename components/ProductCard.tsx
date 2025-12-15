@@ -196,229 +196,211 @@ export default function ProductCard({ product, onPurchase }: ProductCardProps) {
 
                         <div style={{ marginBottom: '1.5rem' }}>
                             <h4 style={{ fontSize: '1rem', marginBottom: '0.75rem', color: 'var(--text-primary)' }}>
-                                background: `${stockColor}15`,
-                                color: stockColor,
-                                borderRadius: '6px',
-                                fontWeight: 600,
-                                fontSize: '0.9rem'
+                                Key Features
+                            </h4>
+                            <ul style={{
+                                listStyle: 'none',
+                                display: 'grid',
+                                gridTemplateColumns: '1fr 1fr',
+                                gap: '0.5rem',
                             }}>
-                                {product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}
-                            </span>
+                                {product.features.map((feature, index) => (
+                                    <li key={index} style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '0.5rem',
+                                        color: 'var(--text-secondary)',
+                                        fontSize: '0.85rem',
+                                    }}>
+                                        <span style={{ color: 'var(--accent-green)' }}>✓</span>
+                                        {feature}
+                                    </li>
+                                ))}
+                            </ul>
                         </div>
 
-                        {/* Product Details Section */}
-                        <div style={{
-                            background: 'var(--bg-tertiary)',
-                            padding: '1.25rem',
-                            borderRadius: 'var(--radius-md)',
-                            marginBottom: '1.5rem'
-                        }}>
-                            <h3 style={{ fontSize: '1.1rem', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                <span>📋</span> Product Details
-                            </h3>
-                            <p style={{ color: 'var(--text-secondary)', lineHeight: '1.6', fontSize: '0.95rem' }}>
-                                {product.description}
-                            </p>
-                        </div>
-                        Select Plan Duration
-                    </h4>
+                        <div style={{ marginBottom: '1.5rem' }}>
+                            <h4 style={{ fontSize: '1rem', marginBottom: '0.75rem', color: 'var(--text-primary)' }}>
+                                Select Plan
+                            </h4>
 
-                    <div style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))',
-                        gap: '1rem'
-                    }}>
-                        {product.durations.map((duration, index) => (
-                            <div
-                                key={index}
-                                onClick={() => setSelectedDuration(index)}
-                                style={{
-                                    padding: '1rem',
-                                    borderRadius: 'var(--radius-md)',
-                                    border: `2px solid ${selectedDuration === index
-                                        ? 'var(--primary-start)'
-                                        : 'var(--glass-border)'
-                                        }`,
-                                    background: selectedDuration === index
-                                        ? 'rgba(139, 92, 246, 0.1)'
-                                        : 'var(--bg-tertiary)',
-                                    cursor: 'pointer',
-                                    transition: 'all var(--transition-fast)',
-                                    textAlign: 'center'
-                                }}
-                            >
-                                <div style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.25rem', color: selectedDuration === index ? 'var(--primary-start)' : 'inherit' }}>
-                                    {duration.months}
-                                </div>
-                                <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>
-                                    {duration.months === 1 ? 'Month' : 'Months'}
-                                </div>
-                                <div style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--accent-green)' }}>
-                                    ₹{duration.price}
-                                </div>
+                            <div className="duration-grid">
+                                {product.durations.map((duration, index) => (
+                                    <button
+                                        key={index}
+                                        onClick={() => setSelectedDuration(index)}
+                                        style={{
+                                            padding: '0.75rem',
+                                            borderRadius: 'var(--radius-md)',
+                                            border: `2px solid ${selectedDuration === index
+                                                ? 'var(--primary-start)'
+                                                : 'var(--glass-border)'
+                                                }`,
+                                            background: selectedDuration === index
+                                                ? 'rgba(139, 92, 246, 0.1)'
+                                                : 'var(--bg-tertiary)',
+                                            color: 'var(--text-primary)',
+                                            cursor: 'pointer',
+                                            transition: 'all var(--transition-fast)',
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            alignItems: 'center',
+                                            gap: '0.25rem',
+                                        }}
+                                    >
+                                        <span style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>
+                                            {duration.months} {duration.months === 1 ? 'Month' : 'Months'}
+                                        </span>
+                                        <span style={{ fontSize: '1.125rem', fontWeight: 700 }}>
+                                            ₹{duration.price}
+                                        </span>
+                                    </button>
+                                ))}
                             </div>
-                        ))}
-                    </div>
-                </div>
+                        </div>
 
                         {/* Quantity Selector */}
-            <div style={{ marginBottom: '1.5rem' }}>
-                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500 }}>
-                    Quantity (Max 5)
-                </label>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                    <button
-                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                        className="btn"
-                        style={{
-                            padding: '0.75rem 1.25rem',
-                            minWidth: '50px',
-                            background: 'var(--bg-tertiary)'
-                        }}
-                    >
-                        −
-                    </button>
-                    <span style={{
-                        fontSize: '1.5rem',
-                        fontWeight: 700,
-                        minWidth: '40px',
-                        textAlign: 'center'
-                    }}>
-                        {quantity}
-                    </span>
-                    <button
-                        onClick={() => setQuantity(Math.min(5, quantity + 1))}
-                        className="btn"
-                        style={{
-                            padding: '0.75rem 1.25rem',
-                            minWidth: '50px',
-                            background: 'var(--bg-tertiary)'
-                        }}
-                    >
-                        +
-                    </button>
-                </div>
-            </div>
+                        <div style={{ marginBottom: '1.5rem' }}>
+                            <h4 style={{ fontSize: '1rem', marginBottom: '0.75rem', color: 'var(--text-primary)' }}>
+                                Quantity
+                            </h4>
+                            <select
+                                value={quantity}
+                                onChange={(e) => setQuantity(parseInt(e.target.value))}
+                                className="input"
+                                style={{
+                                    maxWidth: '150px',
+                                    padding: '0.75rem',
+                                    fontSize: '1rem',
+                                    fontWeight: 600
+                                }}
+                            >
+                                {[1, 2, 3, 4, 5].map(num => (
+                                    <option key={num} value={num}>
+                                        {num} {num === 1 ? 'Unit' : 'Units'}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
 
-            {/* Price Summary */}
-            <div style={{
-                background: 'rgba(139, 92, 246, 0.05)',
-                borderRadius: 'var(--radius-md)',
-                border: '1px solid var(--glass-border)'
-            }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem', color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
-                    <span>Price per unit:</span>
-                    <span>₹{product.durations[selectedDuration]?.price}</span>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem', color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
-                    <span>Quantity:</span>
-                    <span>×{quantity}</span>
-                </div>
-                <div style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    paddingTop: '0.75rem',
-                    borderTop: '1px solid var(--glass-border)',
-                    fontWeight: 700,
-                    fontSize: '1.25rem'
-                }}>
-                    <span>Total:</span>
-                    <span style={{ color: 'var(--primary-start)' }}>
-                        ₹{(product.durations[selectedDuration]?.price || 0) * quantity}
-                    </span>
-                </div>
-            </div>
+                        {/* Price Summary */}
+                        <div style={{
+                            marginBottom: '2rem',
+                            padding: '1rem',
+                            background: 'rgba(139, 92, 246, 0.05)',
+                            borderRadius: 'var(--radius-md)',
+                            border: '1px solid var(--glass-border)'
+                        }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem', color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
+                                <span>Price per unit:</span>
+                                <span>₹{product.durations[selectedDuration]?.price}</span>
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem', color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
+                                <span>Quantity:</span>
+                                <span>×{quantity}</span>
+                            </div>
+                            <div style={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                paddingTop: '0.75rem',
+                                borderTop: '1px solid var(--glass-border)',
+                                fontWeight: 700,
+                                fontSize: '1.25rem'
+                            }}>
+                                <span>Total:</span>
+                                <span style={{ color: 'var(--primary-start)' }}>
+                                    ₹{(product.durations[selectedDuration]?.price || 0) * quantity}
+                                </span>
+                            </div>
+                        </div>
 
-            <div style={{
-                display: 'grid',
-                gridTemplateColumns: '1fr 1fr',
-                gap: '1rem',
-            }}>
-                <button
-                    className="btn btn-secondary"
-                    onClick={handleAddToCart}
-                    disabled={product.stock < 1}
-                    style={{
-                        padding: '0.75rem',
-                        border: '1px solid var(--primary-start)'
-                    }}
-                >
-                    Add to Cart
-                </button>
-                <button
-                    className="btn btn-primary"
-                    onClick={handleBuyNow}
-                    disabled={product.stock < 1}
-                >
-                    Buy Now
-                </button>
-            </div>
+                        <div style={{
+                            display: 'grid',
+                            gridTemplateColumns: '1fr 1fr',
+                            gap: '1rem',
+                        }}>
+                            <button
+                                className="btn btn-secondary"
+                                onClick={handleAddToCart}
+                                disabled={product.stock < 1}
+                                style={{
+                                    padding: '0.75rem',
+                                    border: '1px solid var(--primary-start)'
+                                }}
+                            >
+                                Add to Cart
+                            </button>
+                            <button
+                                className="btn btn-primary"
+                                onClick={handleBuyNow}
+                                disabled={product.stock < 1}
+                            >
+                                Buy Now
+                            </button>
+                        </div>
 
-            {product.stock < 1 && (
-                <p style={{ textAlign: 'center', marginTop: '1rem', color: '#ef4444', fontSize: '0.9rem' }}>
-                    Out of stock
-                </p>
+                        {product.stock < 1 && (
+                            <p style={{ textAlign: 'center', marginTop: '1rem', color: '#ef4444', fontSize: '0.9rem' }}>
+                                Out of stock
+                            </p>
+                        )}
+                    </div>
+                </div>
             )}
-        </div >
-                </div >
-            )
-}
 
-{/* Success Animation Dialog */ }
-{
-    showSuccess && (
-        <div style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: 'rgba(0, 0, 0, 0.8)',
-            backdropFilter: 'blur(8px)',
-            zIndex: 2000,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            animation: 'fadeIn 0.3s ease'
-        }}>
-            <div style={{
-                background: 'linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary))',
-                padding: '3rem',
-                borderRadius: 'var(--radius-xl)',
-                border: '2px solid var(--primary-start)',
-                boxShadow: '0 0 50px rgba(139, 92, 246, 0.5)',
-                textAlign: 'center',
-                animation: 'scaleIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
-            }}>
+            {/* Success Animation Dialog */}
+            {showSuccess && (
                 <div style={{
-                    width: '80px',
-                    height: '80px',
-                    borderRadius: '50%',
-                    background: 'linear-gradient(135deg, var(--accent-green), #059669)',
-                    margin: '0 auto 1.5rem',
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    background: 'rgba(0, 0, 0, 0.8)',
+                    backdropFilter: 'blur(8px)',
+                    zIndex: 2000,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    animation: 'checkmarkPop 0.5s ease 0.2s both'
+                    animation: 'fadeIn 0.3s ease'
                 }}>
-                    <span style={{ fontSize: '3rem', color: 'white' }}>✓</span>
+                    <div style={{
+                        background: 'linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary))',
+                        padding: '3rem',
+                        borderRadius: 'var(--radius-xl)',
+                        border: '2px solid var(--primary-start)',
+                        boxShadow: '0 0 50px rgba(139, 92, 246, 0.5)',
+                        textAlign: 'center',
+                        animation: 'scaleIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+                    }}>
+                        <div style={{
+                            width: '80px',
+                            height: '80px',
+                            borderRadius: '50%',
+                            background: 'linear-gradient(135deg, var(--accent-green), #059669)',
+                            margin: '0 auto 1.5rem',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            animation: 'checkmarkPop 0.5s ease 0.2s both'
+                        }}>
+                            <span style={{ fontSize: '3rem', color: 'white' }}>✓</span>
+                        </div>
+                        <h2 style={{
+                            fontSize: '1.75rem',
+                            marginBottom: '0.5rem',
+                            background: 'linear-gradient(135deg, var(--primary-start), var(--primary-end))',
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent'
+                        }}>
+                            Added to Cart!
+                        </h2>
+                        <p style={{ color: 'var(--text-secondary)', fontSize: '1rem' }}>
+                            Redirecting to checkout...
+                        </p>
+                    </div>
                 </div>
-                <h2 style={{
-                    fontSize: '1.75rem',
-                    marginBottom: '0.5rem',
-                    background: 'linear-gradient(135deg, var(--primary-start), var(--primary-end))',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent'
-                }}>
-                    Added to Cart!
-                </h2>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '1rem' }}>
-                    Redirecting to checkout...
-                </p>
-            </div>
-        </div>
-    )
-}
+            )}
         </>
     );
 }
