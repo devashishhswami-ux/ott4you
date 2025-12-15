@@ -1919,4 +1919,85 @@ html {
     width: 60px !important;
     height: 60px !important;
   }
+}@media (max-width: 768px) {
+    .cart-item {
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    .cart-item h3 {
+        font-size: 1.1rem;
+    }
+
+    .cart-img-wrapper {
+        width: 60px !important;
+        height: 60px !important;
+    }
+
+    /* Additional mobile cart fixes */
+    .cart-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .cart-item {
+        flex-direction: column !important;
+        gap: 1rem !important;
+    }
+
+    .cart-item>div {
+        width: 100% !important;
+        text-align: left !important;
+    }
+
+    .cart-summary {
+        position: sticky !important;
+        bottom: 0 !important;
+        margin-top: 1rem !important;
+    }
+}
+
+/* Product Modal Mobile Optimization */
+@media (max-width: 640px) {
+    .glass-card {
+        max-width: 100% !important;
+        max-height: 95vh !important;
+        margin: 0.5rem !important;
+    }
+
+    /* Adjust features grid on mobile */
+    .glass-card ul {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Modal close button more accessible on mobile */
+    .glass-card button[style*="position: absolute"] {
+        top: 0.5rem !important;
+        right: 0.5rem !important;
+        font-size: 1.75rem !important;
+        padding: 0.5rem !important;
+        background: rgba(0, 0, 0, 0.5) !important;
+        border-radius: 50% !important;
+        width: 40px !important;
+        height: 40px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+}
+
+/* Full Width Button Utility */
+.full-width {
+    width: 100% !important;
+}
+
+/* Button Outline Style */
+.btn-outline {
+    background: transparent;
+    border: 2px solid var(--glass-border);
+    color: var(--text-primary);
+}
+
+.btn-outline:hover {
+    border-color: var(--primary-start);
+    background: rgba(139, 92, 246, 0.1);
 }

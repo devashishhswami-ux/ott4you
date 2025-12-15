@@ -13,6 +13,7 @@ interface ProductCardProps {
 export default function ProductCard({ product, onPurchase }: ProductCardProps) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedDuration, setSelectedDuration] = useState(0);
+    const [quantity, setQuantity] = useState(1);
     const { addToCart } = useCart();
 
     const handlePurchase = () => {
@@ -20,9 +21,10 @@ export default function ProductCard({ product, onPurchase }: ProductCardProps) {
             onPurchase(
                 product._id,
                 product.durations[selectedDuration].months,
-                product.durations[selectedDuration].price
+                product.durations[selectedDuration].price * quantity
             );
             setIsModalOpen(false);
+            setQuantity(1);
         }
     };
 
@@ -35,8 +37,9 @@ export default function ProductCard({ product, onPurchase }: ProductCardProps) {
                 logo: product.logo,
                 duration: product.durations[selectedDuration].months,
                 price: product.durations[selectedDuration].price
-            });
+            }, quantity);
             setIsModalOpen(false);
+            setQuantity(1);
         }
     };
 
@@ -154,6 +157,27 @@ export default function ProductCard({ product, onPurchase }: ProductCardProps) {
                             {product.description}
                         </p>
 
+                        {/* Stock Display */}
+                        <div style={{ marginBottom: '1.5rem' }}>
+                            <div style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '0.5rem',
+                                padding: '0.5rem 1rem',
+                                borderRadius: 'var(--radius-md)',
+                                background: product.stock > 50 ? 'rgba(16, 185, 129, 0.1)' : product.stock > 10 ? 'rgba(245, 158, 11, 0.1)' : 'rgba(239, 68, 68, 0.1)',
+                                border: `1px solid ${product.stock > 50 ? 'var(--accent-green)' : product.stock > 10 ? 'var(--accent-orange)' : '#ef4444'}`,
+                            }}>
+                                <span style={{ fontSize: '1.25rem' }}>📦</span>
+                                <span style={{
+                                    color: product.stock > 50 ? 'var(--accent-green)' : product.stock > 10 ? 'var(--accent-orange)' : '#ef4444',
+                                    fontWeight: 600
+                                }}>
+                                    {product.stock} in stock
+                                </span>
+                            </div>
+                        </div>
+
                         <div style={{ marginBottom: '1.5rem' }}>
                             <h4 style={{ fontSize: '1rem', marginBottom: '0.75rem', color: 'var(--text-primary)' }}>
                                 Key Features
@@ -179,7 +203,7 @@ export default function ProductCard({ product, onPurchase }: ProductCardProps) {
                             </ul>
                         </div>
 
-                        <div style={{ marginBottom: '2rem' }}>
+                        <div style={{ marginBottom: '1.5rem' }}>
                             <h4 style={{ fontSize: '1rem', marginBottom: '0.75rem', color: 'var(--text-primary)' }}>
                                 Select Plan
                             </h4>
@@ -219,6 +243,61 @@ export default function ProductCard({ product, onPurchase }: ProductCardProps) {
                             </div>
                         </div>
 
+                        {/* Quantity Selector */}
+                        <div style={{ marginBottom: '1.5rem' }}>
+                            <h4 style={{ fontSize: '1rem', marginBottom: '0.75rem', color: 'var(--text-primary)' }}>
+                                Quantity
+                            </h4>
+                            <select
+                                value={quantity}
+                                onChange={(e) => setQuantity(parseInt(e.target.value))}
+                                className="input"
+                                style={{
+                                    maxWidth: '150px',
+                                    padding: '0.75rem',
+                                    fontSize: '1rem',
+                                    fontWeight: 600
+                                }}
+                            >
+                                {[1, 2, 3, 4, 5].map(num => (
+                                    <option key={num} value={num}>
+                                        {num} {num === 1 ? 'Unit' : 'Units'}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
+                        {/* Price Summary */}
+                        <div style={{
+                            marginBottom: '2rem',
+                            padding: '1rem',
+                            background: 'rgba(139, 92, 246, 0.05)',
+                            borderRadius: 'var(--radius-md)',
+                            border: '1px solid var(--glass-border)'
+                        }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem', color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
+                                <span>Price per unit:</span>
+                                <span>₹{product.durations[selectedDuration]?.price}</span>
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem', color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
+                                <span>Quantity:</span>
+                                <span>×{quantity}</span>
+                            </div>
+                            <div style={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                paddingTop: '0.75rem',
+                                borderTop: '1px solid var(--glass-border)',
+                                fontWeight: 700,
+                                fontSize: '1.25rem'
+                            }}>
+                                <span>Total:</span>
+                                <span style={{ color: 'var(--primary-start)' }}>
+                                    ₹{(product.durations[selectedDuration]?.price || 0) * quantity}
+                                </span>
+                            </div>
+                        </div>
+
                         <div style={{
                             display: 'grid',
                             gridTemplateColumns: '1fr 1fr',
@@ -227,6 +306,7 @@ export default function ProductCard({ product, onPurchase }: ProductCardProps) {
                             <button
                                 className="btn btn-secondary"
                                 onClick={handleAddToCart}
+                                disabled={product.stock < 1}
                                 style={{
                                     padding: '0.75rem',
                                     border: '1px solid var(--primary-start)'
@@ -237,10 +317,17 @@ export default function ProductCard({ product, onPurchase }: ProductCardProps) {
                             <button
                                 className="btn btn-primary"
                                 onClick={handlePurchase}
+                                disabled={product.stock < 1}
                             >
                                 Buy Now
                             </button>
                         </div>
+
+                        {product.stock < 1 && (
+                            <p style={{ textAlign: 'center', marginTop: '1rem', color: '#ef4444', fontSize: '0.9rem' }}>
+                                Out of stock
+                            </p>
+                        )}
                     </div>
                 </div>
             )}

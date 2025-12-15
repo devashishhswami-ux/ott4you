@@ -20,6 +20,7 @@ export default function AdminProductsPage() {
         ],
         features: [''],
         active: true,
+        stock: 999,
     });
 
     useEffect(() => {
@@ -102,6 +103,7 @@ export default function AdminProductsPage() {
             durations: product.durations,
             features: product.features,
             active: product.active,
+            stock: product.stock || 999,
         });
         setShowForm(true);
     };
@@ -119,6 +121,7 @@ export default function AdminProductsPage() {
             ],
             features: [''],
             active: true,
+            stock: 999,
         });
     };
 
@@ -248,6 +251,24 @@ export default function AdminProductsPage() {
                                 />
                             </div>
 
+                            <div>
+                                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>
+                                    Stock Quantity
+                                </label>
+                                <input
+                                    type="number"
+                                    className="input"
+                                    value={formData.stock}
+                                    onChange={(e) => setFormData({ ...formData, stock: parseInt(e.target.value) || 0 })}
+                                    min="0"
+                                    placeholder="e.g., 999"
+                                    required
+                                />
+                                <small style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', display: 'block', marginTop: '0.25rem' }}>
+                                    Set to 999 for unlimited-like inventory
+                                </small>
+                            </div>
+
                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                 <input
                                     type="checkbox"
@@ -323,6 +344,9 @@ export default function AdminProductsPage() {
                                                     {duration.months}M: ₹{duration.price}
                                                 </span>
                                             ))}
+                                            <span className={`badge ${product.stock > 50 ? 'badge-success' : product.stock > 10 ? 'badge-warning' : 'badge-danger'}`}>
+                                                📦 Stock: {product.stock}
+                                            </span>
                                             <span className={`badge ${product.active ? 'badge-success' : 'badge-danger'}`}>
                                                 {product.active ? 'Active' : 'Inactive'}
                                             </span>

@@ -14,6 +14,7 @@ export interface IProduct {
     durations: IDuration[];
     features: string[];
     active: boolean;
+    stock: number;
     createdAt: Date;
 }
 
@@ -49,6 +50,11 @@ const ProductSchema = new Schema<IProduct>({
     active: {
         type: Boolean,
         default: true,
+    },
+    stock: {
+        type: Number,
+        default: 999,
+        required: true,
     },
     createdAt: {
         type: Date,

@@ -9,7 +9,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
 export default function CartPage() {
-    const { items, removeFromCart, totalAmount, clearCart } = useCart();
+    const { items, removeFromCart, updateQuantity, totalAmount, clearCart } = useCart();
     const { data: session } = useSession();
     const router = useRouter();
 
@@ -60,15 +60,54 @@ export default function CartPage() {
                                         />
                                     </div>
                                     <div style={{ flex: 1 }}>
-                                        <h3>{item.platform}</h3>
-                                        <p style={{ color: 'var(--text-secondary)' }}>
+                                        <h3 style={{ marginBottom: '0.25rem' }}>{item.platform}</h3>
+                                        <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
                                             {item.duration} Month{item.duration > 1 ? 's' : ''} Plan
                                         </p>
-                                        <div style={{ marginTop: '0.5rem' }}>
-                                            Price: ₹{item.price} x {item.quantity}
+                                        <div style={{ marginTop: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+                                            <span style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Quantity:</span>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                                <button
+                                                    onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                                                    disabled={item.quantity <= 1}
+                                                    className="btn btn-secondary"
+                                                    style={{
+                                                        padding: '0.25rem 0.75rem',
+                                                        fontSize: '1rem',
+                                                        minWidth: '32px',
+                                                        height: '32px'
+                                                    }}
+                                                >
+                                                    −
+                                                </button>
+                                                <span style={{
+                                                    minWidth: '40px',
+                                                    textAlign: 'center',
+                                                    fontWeight: 600,
+                                                    fontSize: '1rem'
+                                                }}>
+                                                    {item.quantity}
+                                                </span>
+                                                <button
+                                                    onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                                    disabled={item.quantity >= 5}
+                                                    className="btn btn-secondary"
+                                                    style={{
+                                                        padding: '0.25rem 0.75rem',
+                                                        fontSize: '1rem',
+                                                        minWidth: '32px',
+                                                        height: '32px'
+                                                    }}
+                                                >
+                                                    +
+                                                </button>
+                                            </div>
+                                            <span style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>
+                                                (₹{item.price} each)
+                                            </span>
                                         </div>
                                     </div>
-                                    <div style={{ textAlign: 'right' }}>
+                                    <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                                         <div style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>
                                             ₹{item.price * item.quantity}
                                         </div>

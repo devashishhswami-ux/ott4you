@@ -15,7 +15,8 @@ export interface CartItem {
 
 interface CartContextType {
     items: CartItem[];
-    addToCart: (item: Omit<CartItem, 'id' | 'quantity'>) => void;
+    addToCart: (item: Omit<CartItem, 'id' | 'quantity'>, quantity?: number) => void;
+    updateQuantity: (id: string, quantity: number) => void;
     removeFromCart: (id: string) => void;
     clearCart: () => void;
     itemCount: number;
@@ -44,7 +45,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         localStorage.setItem('ott4you_cart', JSON.stringify(items));
     }, [items]);
 
-    const addToCart = (newItem: Omit<CartItem, 'id' | 'quantity'>) => {
+    const addToCart = (newItem: Omit<CartItem, 'id' | 'quantity'>, quantity: number = 1) => {
         setItems(prev => {
             const id = `${newItem.productId}-${newItem.duration}`;
             const existingItem = prev.find(item => item.id === id);
@@ -53,15 +54,23 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                 // Return new array with updated quantity
                 return prev.map(item =>
                     item.id === id
-                        ? { ...item, quantity: item.quantity + 1 }
+                        ? { ...item, quantity: Math.min(item.quantity + quantity, 5) }
                         : item
                 );
             }
 
-            // Add new item
-            return [...prev, { ...newItem, id, quantity: 1 }];
+            // Add new item with specified quantity (max 5)
+            return [...prev, { ...newItem, id, quantity: Math.min(quantity, 5) }];
         });
-        alert('Added to cart!');
+        alert(`Added ${quantity} item(s) to cart!`);
+    };
+
+    const updateQuantity = (id: string, quantity: number) => {
+        if (quantity < 1 || quantity > 5) return;
+
+        setItems(prev => prev.map(item =>
+            item.id === id ? { ...item, quantity } : item
+        ));
     };
 
     const removeFromCart = (id: string) => {
@@ -79,6 +88,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         <CartContext.Provider value={{
             items,
             addToCart,
+            updateQuantity,
             removeFromCart,
             clearCart,
             itemCount,
